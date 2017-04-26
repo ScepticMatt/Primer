@@ -25,7 +25,7 @@ private:
 		"January", "February", "March", "April", "May", "June", 
 		"July", "August", "September", "October", "November", "December"};
 	std::string outputISODate() const{return std::string(getYear()) + "-" + getMonth() + "-" + getDay();}
-	unsigned year=1, month=1, day=1;
+	unsigned year, month, day;	// TODO: year 0 and before?
 	static unsigned currentYear() {
 		auto now = std::chrono::system_clock::now();
 		auto in_time_t = std::chrono::system_clock::to_time_t(now);
