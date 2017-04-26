@@ -12,11 +12,11 @@ bool test();
 class USDate{
 private:
 	//date formats:
-	static std::regex shortMDY;		// 4/1/16 or 04/01/2016
-	static std::regex longMDY;		// Apr 1(st), 2016 or April 1(st), 2016 
-	static std::regex longDMY;		// 1(st) of April, 2016	
-	static std::regex militaryDMY;	// 1 APR 2016
-	static std::regex iso8601;		// 2016-04-01
+	static const std::regex shortMDY;		// 4/1/16 or 04/01/2016
+	static const std::regex longMDY;		// Apr 1(st), 2016 or April 1(st), 2016 
+	static const std::regex longDMY;		// 1(st) of April, 2016	
+	static const std::regex militaryDMY;	// 1 APR 2016
+	static const std::regex iso8601;		// 2016-04-01
 	//month words
 	static constexpr std::array<char[4],12> shortMonths{	// std::string can't be constexpr
 		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", 
@@ -25,7 +25,7 @@ private:
 		"January", "February", "March", "April", "May", "June", 
 		"July", "August", "September", "October", "November", "December"};
 	std::string outputISODate() const{return std::string(getYear()) + "-" + getMonth() + "-" + getDay();}
-	unsigned year, month, day;	// TODO: year 0 and before?
+	unsigned year, month, day;
 	static unsigned currentYear() {
 		auto now = std::chrono::system_clock::now();
 		auto in_time_t = std::chrono::system_clock::to_time_t(now);
@@ -92,12 +92,12 @@ public:
 // Have to define outside (Until C++17, when inline static members with initializer are defined)
 constexpr std::array<char[4],12> USDate::shortMonths;
 constexpr std::array<char[10],12> USDate::longMonths;
-//formats
-std::regex USDate::shortMDY{R"(^(\d{1,2})[./](\d{1,2})[./](\d{2}|\d{4})$)"};				// 4/1/16 or 04/01/2016
-std::regex USDate::longMDY{R"(^([A-Z][a-z]{2,8}) (\d{1,2})(?:st|rd|th)?, (\d{4})$)"};		// Apr 1(st), 2016 or April 1(st), 2016 
-std::regex USDate::longDMY{R"(^(\d{1,2})(?:st|rd|th)? of ([A-Z][a-z]{2,8}), (\d{4})$)"};	// 1(st) of April, 2016	
-std::regex USDate::militaryDMY{R"(^(\d{2}) ([A-Z]{3}) (\d{4})$)"};							// 1 APR 2016
-std::regex USDate::iso8601{R"(^(\d{4})-(\d{2})-(\d{2})$)"};									// 2016-04-01
+//formats. regex compile done at runtime
+const std::regex USDate::shortMDY{R"(^(\d{1,2})[./](\d{1,2})[./](\d{2}|\d{4})$)"};				// 4/1/16 or 04/01/2016
+const std::regex USDate::longMDY{R"(^([A-Z][a-z]{2,8}) (\d{1,2})(?:st|rd|th)?, (\d{4})$)"};		// Apr 1(st), 2016 or April 1(st), 2016 
+const std::regex USDate::longDMY{R"(^(\d{1,2})(?:st|rd|th)? of ([A-Z][a-z]{2,8}), (\d{4})$)"};	// 1(st) of April, 2016	
+const std::regex USDate::militaryDMY{R"(^(\d{2}) ([A-Z]{3}) (\d{4})$)"};						// 1 APR 2016
+const std::regex USDate::iso8601{R"(^(\d{4})-(\d{2})-(\d{2})$)"};								// 2016-04-01
 std::ostream &print(std::ostream &os, const USDate& d){os << d.outputISODate();}
 
 int main(){
